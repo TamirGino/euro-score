@@ -1,0 +1,29 @@
+.soccer {
+    background: url(https://www.imagehandler.net/?istyle=0000&fmt=png&img=A1090906000&iset=0100&c=999&iindex=0062&w=600&h=600);
+    background-size: 100px 100px;
+    height: 100px;
+    width: 100px;
+    position: relative;
+    -webkit-animation:roll 4.5s infinite;
+    -moz-animation:roll 4.5s infinite;
+    animation:roll 4.5s infinite;
+  }
+  
+  @-moz-keyframes roll {  
+    0% {left:0px; -webkit-transform: rotate(-360deg);}
+    50% {left:1000px; -webkit-transform: rotate(360deg);}
+    100% {left:0px; -webkit-transform: rotate(-360deg);}
+  }
+  @-webkit-keyframes roll { 
+    0% {left:0px; -webkit-transform: rotate(-360deg);}
+    50% {left:1000px; -webkit-transform: rotate(360deg);}
+    100% {left:0px; -webkit-transform: rotate(-360deg);}
+  }
+  
+  @keyframes roll { 
+    0% {left:0px; -webkit-transform: rotate(-360deg);}
+    50% {left:1000px; -webkit-transform: rotate(360deg);}
+    100% {left:0px; -webkit-transform: rotate(-360deg);}
+  }
+  
+  
