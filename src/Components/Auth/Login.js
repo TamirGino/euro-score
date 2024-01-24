@@ -2,40 +2,73 @@ import React, { useState } from 'react';
 import './Login.css' 
 import { useNavigate } from 'react-router-dom';
 import { UserAuth } from '../../Context/AuthContex';
+import { mapFirebaseErrorToUserMessage } from '../../Constants/Constants'
+import { GoogleButton } from 'react-google-button'
 
 const Login = () => {
   const [isRegister, setIsRegister] = useState(true);
-  const [name, setName] = useState('');
+  const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState('');
   const navigate = useNavigate();
 
-  const {createUser, signIn} = UserAuth();
+  const {createUser, signIn, resetPassword, googleSignIn} = UserAuth();
 
   const handleToggle = () => {
+    setSuccessMsg('');
+    setError('');
     setIsRegister(!isRegister);
+  };
+
+  const handleForgotPassword = async () => {
+    setError('');
+    setSuccessMsg('');
+    if (email === ''){
+      setError('Enter your email address to receive a password reset link.')
+      return;
+    }
+    try {
+      await resetPassword(email);
+      setSuccessMsg("Password reset email sent. Check your email for further instructions.")
+    } catch (error) {
+      // Handle errors, e.g., display an error message to the user
+      const userFriendlyErrorMessage = mapFirebaseErrorToUserMessage(error.message);
+      setError(userFriendlyErrorMessage);
+      console.log(error.message);
+      console.error('Error sending password reset email:', error.message);
+    }
   };
 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccessMsg('');
     setError('');
     try{
         //await createUser(email, password);
         if (isRegister) {
-          // Call create user function for sign-up
-          await createUser(email, password);
+          await createUser(email, password, userName);
         } else {
           // Call sign-in function for sign-in
           await signIn(email, password);
           navigate('/bets');
         }
     } catch(e) {
-        setError(e.message);
+        const userFriendlyErrorMessage = mapFirebaseErrorToUserMessage(e.message);
+        setError(userFriendlyErrorMessage);
         console.log(e.message)
     }
   };
+
+  const handleGoogleSignIn = async () => {
+      try {
+        await googleSignIn(); 
+      } catch (error) {
+        console.log(error);
+      }
+  }
 
 
   return (
@@ -44,17 +77,19 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <h1>{isRegister ? 'Create Account' : 'Sign In'}</h1>
           <div className="social-icons">
-            <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-github"></i></a>
-            <a href="#" className="icon"><i className="fa-brands fa-linkedin-in"></i></a>
+            {/* <a href="#" className="icon"><i className="fa-brands fa-google-plus-g"></i></a>
+            <a href="#" className="icon"><i className="fa-brands fa-facebook-f"></i></a> */}
+            <GoogleButton type="light" onClick={handleGoogleSignIn} />
           </div>
           <span>{isRegister ? 'or use your email for registration' : 'or use your email password'}</span>
-          {isRegister && <input onChange={(e) => setName(e.target.value)} type="text" placeholder="Name" />}
-          <input onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" />
-          <input onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
+          {isRegister && <input required onChange={(e) => setUserName(e.target.value)} type="text" placeholder="Name" />}
+          <input required onChange={(e) => setEmail(e.target.value)} type="email" placeholder="Email" />
+          <input required onChange={(e) => setPassword(e.target.value)} type="password" placeholder="Password" />
+          {(error && <p className='error'>{error}</p>) || (successMsg && <p className='success'>{successMsg}</p>)}
+
+          {/* {error !== '' ? <p className='error'>{error}</p> : successMsg !== '' ? <p className='success'>{successMsg}</p> } */}
           {/* {isRegister && <button>Sign Up</button>} */}
-          {!isRegister && <a href="#">Forget Your Password?</a>}
+          {!isRegister && <a onClick={handleForgotPassword} href="#">Forget Your Password?</a>}
           <button>{isRegister ? 'Sign Up' : 'Sign In'}</button>
         </form>
       </div>

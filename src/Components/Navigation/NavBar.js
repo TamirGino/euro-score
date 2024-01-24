@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { AppBar,Box,Toolbar,IconButton,Container, Typography} from '@mui/material';
+import { AppBar,Box,Toolbar,IconButton,Container, Typography, Avatar, Menu} from '@mui/material';
 import styles from '../../Styles/NavBar.module.css'
 import { Link, useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
@@ -7,6 +7,7 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import {pages, hebrewTranslations} from '../../Constants/Constants'
 import ResponsiveNav from './ResponsiveNav';
 import { UserAuth } from '../../Context/AuthContex';
+import ProfileMenu from '../Navigation/ProfileMenu'
 
 const NavBar = () => {
   const {user, logout} = UserAuth();
@@ -28,7 +29,7 @@ const NavBar = () => {
         <Toolbar>
           
           <Box>
-            <Link to="/home" >
+            {/* <Link to="/home" >
                 <IconButton>
                     <HomeIcon sx={{color:'white'}}/>
                 </IconButton>
@@ -36,7 +37,8 @@ const NavBar = () => {
             <IconButton onClick={handleLogout}> 
               <LogoutRoundedIcon sx={{color:'white'}}/>
             </IconButton>
-            <Typography>Hello, {user && user.email}</Typography>
+            <Typography>Hello, {user ? user.displayName : 'guest'}</Typography> */}
+            <ProfileMenu logout={handleLogout} user={user}/>
           </Box>
 
           <Box sx={{ flexGrow: { xs: 0.5, sm: 1} }} />

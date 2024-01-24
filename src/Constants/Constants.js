@@ -34,8 +34,25 @@ const tabData = [
     { value: 'rules', icon: <ReceiptLongOutlinedIcon style={{ fontSize: 20 }} /> },
   ];
 
+
+const mapFirebaseErrorToUserMessage = (firebaseErrorMessage) => {
+  switch (firebaseErrorMessage) {
+    case 'Firebase: Error (auth/invalid-credential).':
+      return 'Invalid email or password. Please check your credentials.';
+    case 'Firebase: Error (auth/invalid-email).':
+      return 'Invalid email format. Please enter a valid email address.';
+    case 'Firebase: Password should be at least 6 characters (auth/weak-password).':
+      return 'Password should be at least 6 characters long.';
+    case 'Firebase: Error (auth/email-already-in-use).':
+      return 'The email address is already in use. Please use a different email.';
+    default:
+      return 'An error occurred. Please try again later.';
+  }
+};
+
 export {
     pages,
     hebrewTranslations,
     tabData,
+    mapFirebaseErrorToUserMessage
 }
