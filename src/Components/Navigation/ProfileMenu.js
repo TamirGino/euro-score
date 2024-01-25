@@ -8,9 +8,9 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import Flag from 'react-flagkit';
 
 export default function AccountMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -67,7 +67,7 @@ export default function AccountMenu(props) {
             },
             '&::before': {
               content: '""',
-              display: 'block',
+              display: 'none',
               position: 'absolute',
               top: 0,
               right: 160,
@@ -82,19 +82,36 @@ export default function AccountMenu(props) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>
-          <Avatar /> <Typography>Hello, {props.user ? props.user.displayName : 'guest'}</Typography> 
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <Avatar /> My account
+        <MenuItem sx={{pointerEvents: 'none'}} >
+         <Typography fontWeight='bold'>Hello, {props.user ? props.user.displayName : 'guest'}</Typography> 
         </MenuItem>
         <Divider />
-        <MenuItem onClick={handleClose}>
-          <ListItemIcon>
-            <PersonAdd fontSize="small" />
-          </ListItemIcon>
-          Add another account
+        {/* <MenuItem sx={{pointerEvents: 'none'}} >
+          <Typography fontStyle='italic'>You have 3 groups</Typography> 
+        </MenuItem> */}
+        <MenuItem sx={{pointerEvents: 'none'}} >
+        <Avatar />
+          Top scorer
         </MenuItem>
+        <MenuItem  sx={{pointerEvents: 'none'}}>
+          <ListItemIcon>
+            <Flag country="FR" />
+          </ListItemIcon>
+          Winning team
+        </MenuItem>
+        <MenuItem sx={{pointerEvents: 'none'}}>
+          <ListItemIcon>
+              🥇
+          </ListItemIcon>
+          In group B
+        </MenuItem>
+        <MenuItem sx={{pointerEvents: 'none'}}>
+          <ListItemIcon>
+              🥉
+          </ListItemIcon>
+          In group A
+        </MenuItem>
+        <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <Settings fontSize="small" />

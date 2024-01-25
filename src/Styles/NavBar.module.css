@@ -1,7 +1,7 @@
 .nav_link{
     color:#EFEDFF;
     position: relative;
-    font-size: 20px;
+    font-size: 18px;
     text-decoration: none;
     font-weight: bold;
 }
@@ -20,8 +20,12 @@
 }
 
 .nav_link:hover::after {
-  transform: scaleX(1);
+  transform: scaleX(1.1);
   transform-origin: bottom left;
 }
 
-
+.activeNav {
+  /* Your styles for the active link, e.g., underline or color */
+  border-bottom: 2px solid #59df72;
+  /* color: #59DF72; */
+}

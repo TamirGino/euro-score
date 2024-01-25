@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import { AppBar,Box,Toolbar,IconButton,Container, Typography, Avatar, Menu} from '@mui/material';
 import styles from '../../Styles/NavBar.module.css'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import HomeIcon from '@mui/icons-material/Home';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import {pages, hebrewTranslations} from '../../Constants/Constants'
@@ -10,6 +10,7 @@ import { UserAuth } from '../../Context/AuthContex';
 import ProfileMenu from '../Navigation/ProfileMenu'
 
 const NavBar = () => {
+
   const {user, logout} = UserAuth();
   const navigate = useNavigate();
 
@@ -27,17 +28,7 @@ const NavBar = () => {
     <AppBar elevation={0} position="sticky" sx={{background: '#09322B'}}>
       <Container maxWidth="xl">
         <Toolbar>
-          
           <Box>
-            {/* <Link to="/home" >
-                <IconButton>
-                    <HomeIcon sx={{color:'white'}}/>
-                </IconButton>
-            </Link>
-            <IconButton onClick={handleLogout}> 
-              <LogoutRoundedIcon sx={{color:'white'}}/>
-            </IconButton>
-            <Typography>Hello, {user ? user.displayName : 'guest'}</Typography> */}
             <ProfileMenu logout={handleLogout} user={user}/>
           </Box>
 
@@ -45,12 +36,15 @@ const NavBar = () => {
 
           <Box sx={{ display: { xs: 'none', sm: 'flex', gap:'50px' },}}>
             {pages.map((page) => (
-              <Link to={"/" + page.toLowerCase()}
+              <NavLink to={"/" + page.toLowerCase()}
                 key={page}
-                className={styles.nav_link}
+                // className={styles.nav_link}
+                className={({ isActive }) =>
+                  isActive ? `${styles.nav_link} ${styles.activeNav}` : styles.nav_link
+                }
                 >
                     {hebrewTranslations[page]}
-                </Link>
+                </NavLink>
             ))}
           </Box>
 
